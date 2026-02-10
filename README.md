@@ -60,6 +60,8 @@ No rollback. No incident response. The incident never happens.
 
 ## Evidence Package
 
+Both success and limitation evidence are included in this proof (`proof/logs/` contains local_test.log and limitation_case.log).
+
 ### Success Evidence
 
 **Location:** `proof/audit_log.jsonl`, `proof/screenshots/`
