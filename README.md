@@ -204,11 +204,15 @@ This is about proving execution can be stopped structurally.
 
 ## Related Work
 
-This proof is part of broader execution governance research.
+This proof is part of a broader execution governance research line.
 
-For conceptual framework and additional context, see:
-- [Main research repository] (link if applicable)
-- [Execution boundary architecture] (link if applicable)
+For canonical concepts, specifications, and architectural context, see:
+
+- **Execution Boundary (Entry Point):** https://github.com/Nick-heo-eg/execution-boundary — Conceptual entry point defining the invariant that execution cannot exist without prior judgment.
+- **Judgment Boundary (Canonical Specification):** https://github.com/Nick-heo-eg/judgment-boundary — Constitutional specification governing judgment authority and downstream execution constraints.
+- **Execution Governance Specification:** https://github.com/Nick-heo-eg/execution-governance-spec — Taxonomy and structural concepts for execution governance and decision classification.
+
+This repository contains a sealed proof artifact and does not duplicate or redefine those specifications.
 
 ---
 
