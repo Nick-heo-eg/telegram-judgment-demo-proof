@@ -198,7 +198,22 @@ For questions about this proof:
 
 ## License
 
-[Choose appropriate license]
+### Dual License Structure
+
+**Code (if any):**
+MIT License — See [LICENSE-CODE](LICENSE-CODE)
+
+**Documentation & Evidence:**
+Creative Commons Attribution-NoDerivatives 4.0 (CC BY-ND 4.0) — See [LICENSE-DOCS](LICENSE-DOCS)
+
+All documentation, audit logs, screenshots, and proof artifacts in this repository are licensed under CC BY-ND 4.0.
+
+**What this means:**
+- ✅ You may cite, reference, and share this proof with attribution
+- ❌ You may not modify, remix, or redistribute altered versions
+
+**Why NoDerivatives?**
+This restriction exists to preserve the integrity of the sealed proof artifact. Evidence should not be modified after publication.
 
 ---
 
