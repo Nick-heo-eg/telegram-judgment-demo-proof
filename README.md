@@ -1,11 +1,37 @@
 # Telegram Judgment Demo — Sealed Proof
 
+## Important Notice
+
+This repository is a sealed proof artifact It documents observed results demonstrating that execution boundaries can function under specific conditions This repository is not an implementation not a product and not an enforcement mechanism It provides no runtime guarantees safety guarantees or compliance claims It does not prevent misuse accidents or harm by itself All code logs screenshots and diagrams exist as evidence for proof purposes only Any operational enforcement must be implemented outside this repository
+
+This proof demonstrates that AI execution can be stopped before side effects occur under controlled conditions It does not claim universal applicability safety certification or production readiness Success evidence and documented limitations are treated as equal components of this proof Questions discussions and critical review are welcome via GitHub Issues
+
+---
+
 > **Execution can be STOPPED or HELD before it happens**
 > when explicit destructive or financial commands are detected.
 
 **Status:** Sealed proof artifact (immutable)
 **Date:** 2026-02-11
 **Evidence:** Complete (success + limitations)
+
+---
+
+## What this proof is
+
+* Observed demonstration that judgment can precede execution structurally
+* Evidence that execution can be prevented before side effects occur
+* Sealed evidence bundle showing both success cases and documented limitations
+* Reproducible test case under specific controlled conditions
+
+## What this proof is not
+
+* Production-ready solution
+* Security control or safety system
+* Policy enforcement engine
+* Compliance certification
+* Telegram bot framework or template
+* Universal guarantee for all scenarios
 
 ---
 
