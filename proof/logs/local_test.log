@@ -1,0 +1,28 @@
+=== Testing Judgment Gate ===
+
+Test: 위험한 shell 명령 (rm -rf)
+{"ts":"2026-02-10T19:27:21.526Z","decision":"STOP","rule_id":"R3_DESTRUCTIVE_SHELL_STOP","reason":"Destructive shell pattern","context":{"source":"tool","tool":"exec","action":"unknown","risk_hints":[]}}
+  Decision: STOP
+  Expected: STOP
+  Reason: Destructive shell pattern
+  Status: ✅ PASS
+
+Test: 안전한 읽기 명령 (ls)
+  Decision: ALLOW
+  Expected: ALLOW
+  Reason: N/A
+  Status: ✅ PASS
+
+Test: Browser Submit (HOLD)
+{"ts":"2026-02-10T19:27:21.527Z","decision":"HOLD","rule_id":"R2_BROWSER_SUBMIT_HOLD","reason":"Browser submit/auth/financial actions require approval","context":{"source":"tool","tool":"browser","action":"unknown","risk_hints":["ui.submit"]}}
+  Decision: HOLD
+  Expected: HOLD
+  Reason: Browser submit/auth/financial actions require approval
+  Status: ✅ PASS
+
+Test: Payment Submission (HOLD)
+{"ts":"2026-02-10T19:27:21.527Z","decision":"HOLD","rule_id":"R2_BROWSER_SUBMIT_HOLD","reason":"Browser submit/auth/financial actions require approval","context":{"source":"tool","tool":"browser","action":"submit_payment","risk_hints":["side_effect.financial"]}}
+  Decision: HOLD
+  Expected: HOLD
+  Reason: Browser submit/auth/financial actions require approval
+  Status: ✅ PASS

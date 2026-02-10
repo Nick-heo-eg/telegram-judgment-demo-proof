@@ -1,0 +1,4 @@
+{"decision":"ALLOW","user_message":"/start","timestamp":"2026-02-10T20:40:27.500Z"}
+{"decision":"STOP","rule_id":"R3_DESTRUCTIVE_SHELL_STOP","reason":"Destructive shell pattern","execution_prevented":true,"user_message":"delete server files","timestamp":"2026-02-10T20:40:39.282Z"}
+{"decision":"HOLD","reason":"Browser submit/auth/financial actions require approval","execution_prevented":true,"user_message":"buy this product","meta":{"amount":120000,"currency":"KRW","merchant":"TEST_SHOP"},"timestamp":"2026-02-10T20:40:50.335Z"}
+{"decision":"ALLOW","user_message":"show me files","timestamp":"2026-02-10T20:41:01.014Z"}
