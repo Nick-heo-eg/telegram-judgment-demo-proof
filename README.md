@@ -62,6 +62,8 @@ No rollback. No incident response. The incident never happens.
 
 Both success and limitation evidence are included in this proof (`proof/logs/` contains local_test.log and limitation_case.log).
 
+ALLOW outcomes are distinguishable by decision path (e.g. direct allow vs no-rules-triggered allow) without changing execution behavior.
+
 ### Success Evidence
 
 **Location:** `proof/audit_log.jsonl`, `proof/screenshots/`
