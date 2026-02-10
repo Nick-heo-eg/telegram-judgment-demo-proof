@@ -64,6 +64,8 @@ Both success and limitation evidence are included in this proof (`proof/logs/` c
 
 ALLOW outcomes are distinguishable by decision path (e.g. direct allow vs no-rules-triggered allow) without changing execution behavior.
 
+ALLOW outcomes are tested for path stability and boundary proximity without changing execution behavior.
+
 ### Success Evidence
 
 **Location:** `proof/audit_log.jsonl`, `proof/screenshots/`
@@ -203,6 +205,20 @@ This is about proving execution can be stopped structurally.
 **Evidence Quality:** High (dual-track: success + limitations)
 **Credibility:** Enhanced through honest limitation documentation
 **Reproducibility:** Audit logs + screenshots provide verification path
+
+---
+
+## Sealed Proof Declaration
+
+This repository contains STOP, HOLD, and ALLOW outcomes. None of these outcomes constitute safety guarantees or execution justification.
+
+**ALLOW is not a safety judgment.** ALLOW outcomes are distinguished by decision path (safe_pattern, no_rules_triggered, ambiguous) for audit traceability and accountability, not for runtime execution control. Path metadata enables post-hoc analysis of false negatives, true negatives, and ambiguous cases without altering execution behavior.
+
+This proof is sealed as dual-track evidence: success cases and failure/limitation cases are documented with equal rigor. Future rule additions, judgment improvements, or blocking enhancements are outside the scope of this repository.
+
+**The purpose of this repository is not to permit execution more effectively, but to structurally reveal when execution is not justified.**
+
+This repository is sealed. Evidence is complete for the stated scope.
 
 ---
 
