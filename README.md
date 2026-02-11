@@ -123,6 +123,75 @@ The boundary intercepts execution **before** dangerous functions are called.
 
 ---
 
+## Decision Tier Model
+
+**Judgment is risk-graded and confidence-aware.**
+
+This system does not use binary filtering (pass/fail). Instead, it implements a **Risk-Graded Execution Boundary** that assigns execution decisions based on risk tiers and classifier confidence levels.
+
+### Tier Structure
+
+| Tier | Risk Level | Decision | Behavior |
+|------|------------|----------|----------|
+| **Tier 3** | High Risk | **STOP** | Execution prevented immediately. No human review. Action blocked. |
+| **Tier 2** | Medium Risk | **HOLD** | Execution suspended. Requires approval. Side effects prevented until reviewed. |
+| **Tier 1** | Low Risk | **ALLOW with audit** | Execution permitted with logging. Audit trail maintained for review. |
+| **Tier 0** | Safe | **ALLOW** | Execution permitted. Normal operation. |
+
+### Risk Scoring & Confidence
+
+Each judgment includes:
+
+- **`risk_score`** (0.0–1.0): Estimated risk magnitude
+  - 0.0 = No detected risk
+  - 0.5 = Moderate uncertainty
+  - 1.0 = Maximum detected risk
+
+- **`classifier_confidence`** (0.0–1.0): Detection certainty
+  - 0.0 = No confidence
+  - 0.5 = Ambiguous
+  - 1.0 = High confidence
+
+**Ambiguous Range Principle:**
+When `classifier_confidence < 0.7` or risk is unclear, the system **defaults to HOLD** rather than allowing execution.
+
+> **"Under uncertainty, containment precedes execution."**
+
+### Enhanced Audit Log Schema
+
+The audit log captures tier-based decisions with risk metadata:
+
+```jsonl
+{
+  "decision": "HOLD",
+  "risk_tier": 2,
+  "risk_score": 0.72,
+  "classifier_confidence": 0.85,
+  "rule_id": "R2_BROWSER_SUBMIT_HOLD",
+  "reason": "Financial transaction requires approval",
+  "execution_prevented": true,
+  "escalation_required": true,
+  "user_message": "buy this product",
+  "meta": {
+    "amount": 120000,
+    "currency": "KRW",
+    "merchant": "TEST_SHOP"
+  },
+  "timestamp": "2026-02-10T20:40:50.335Z"
+}
+```
+
+**New Fields:**
+- `risk_tier`: Numeric tier assignment (0–3)
+- `risk_score`: Quantified risk level (0.0–1.0)
+- `classifier_confidence`: Detection certainty (0.0–1.0)
+- `escalation_required`: Whether human review is needed (boolean)
+- `execution_prevented`: Whether side effects were blocked (boolean)
+
+This structure enables post-hoc analysis of decision quality, false positive rates, and ambiguous boundary cases.
+
+---
+
 ## Scope & Non-Goals
 
 ### This Proof Validates
@@ -173,6 +242,7 @@ Most demos hide failures. We document them proactively.
 ## Documentation
 
 - **[proof/limitations/SEMANTIC_VARIANCE.md](proof/limitations/SEMANTIC_VARIANCE.md)** — Technical analysis of pattern-level detection boundary
+- **[proof/limitations/decision_tier_explanation.md](proof/limitations/decision_tier_explanation.md)** — Why boundaries ≠ guardrails (architectural distinction)
 - **[proof/CHECKLIST.md](proof/CHECKLIST.md)** — Verification checklist
 - **[ANTICIPATED_QUESTIONS.md](ANTICIPATED_QUESTIONS.md)** — Responses to common critiques (if included)
 
