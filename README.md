@@ -1,343 +1,134 @@
-# Telegram Judgment Demo — Sealed Proof
+# Telegram Judgment Demo
 
-## Important Notice
+A Telegram bot with a pre-execution judgment gate.
 
-This repository is a sealed proof artifact It documents observed results demonstrating that execution boundaries can function under specific conditions This repository is not an implementation not a product and not an enforcement mechanism It provides no runtime guarantees safety guarantees or compliance claims It does not prevent misuse accidents or harm by itself All code logs screenshots and diagrams exist as evidence for proof purposes only Any operational enforcement must be implemented outside this repository
-
-This proof demonstrates that AI execution can be stopped before side effects occur under controlled conditions It does not claim universal applicability safety certification or production readiness Success evidence and documented limitations are treated as equal components of this proof Questions discussions and critical review are welcome via GitHub Issues
-
----
-
-> **Execution can be STOPPED or HELD before it happens**
-> when explicit destructive or financial commands are detected.
-
-**Status:** Sealed proof artifact (immutable)
-**Date:** 2026-02-11
-**Evidence:** Complete (success + limitations)
-
----
-
-## What this proof is
-
-* Observed demonstration that judgment can precede execution structurally
-* Evidence that execution can be prevented before side effects occur
-* Sealed evidence bundle showing both success cases and documented limitations
-* Reproducible test case under specific controlled conditions
-
-## What this proof is not
-
-* Production-ready solution
-* Security control or safety system
-* Policy enforcement engine
-* Compliance certification
-* Telegram bot framework or template
-* Universal guarantee for all scenarios
-
----
-
-## What This Proves
-
-When an AI agent plans explicit destructive or financial actions via Telegram,
-the execution can be **stopped before it happens**.
-
-No rollback. No incident response. The incident never happens.
-
-### Validated Properties
-
-✅ **Execution boundary placement** — Decisions made before side effects
-✅ **Decision logging** — Immutable audit trail with timestamps
-✅ **Non-execution guarantee** — Payment function never called in HOLD scenario
-
-### Known Limitations (Documented)
-
-❌ **Semantic variance** — Paraphrased intents bypass pattern-based detection
-❌ **Effect-based convergence** — Different phrasings don't converge to same decision
-❌ **Adversarial robustness** — Not tested against intentional bypass attempts
-
-**See [proof/limitations/](proof/limitations/) for technical analysis.**
-
----
-
-## Evidence Package
-
-Both success and limitation evidence are included in this proof (`proof/logs/` contains local_test.log and limitation_case.log).
-
-ALLOW outcomes are distinguishable by decision path (e.g. direct allow vs no-rules-triggered allow) without changing execution behavior.
-
-ALLOW outcomes are tested for path stability and boundary proximity without changing execution behavior.
-
-### Success Evidence
-
-**Location:** `proof/audit_log.jsonl`, `proof/screenshots/`
-
-| Scenario | Input | Decision | Evidence |
-|----------|-------|----------|----------|
-| **Destructive** | `delete server files` | STOP | Execution prevented, logged with R3_DESTRUCTIVE_SHELL_STOP |
-| **Financial** | `buy this product` | HOLD | Execution held, payment metadata captured, `submitPayment()` never called |
-| **Safe** | `show me files` | ALLOW | Operation completed, logged |
-
-**Screenshot:**
-![Telegram Proof](proof/screenshots/telegram_judgment_stop_hold_allow.png)
-
-**Audit Log:**
-```bash
-cat proof/audit_log.jsonl
+```
+User message → Judgment (STOP / HOLD / ALLOW) → Execution blocked or allowed → Audit log emitted
 ```
 
-All decisions recorded with `execution_prevented: true` for STOP/HOLD.
+This repository is a sealed proof artifact demonstrating that execution can be structurally intercepted before side effects occur.
 
-### Limitation Evidence
+---
 
-**Location:** `proof/limitations/SEMANTIC_VARIANCE.md`, `proof/limitations/screenshots/`
+## What Was Tested
 
-**Observation:**
-Paraphrased commands bypass pattern-based detection:
-- `"delete server files"` → STOP ✅
-- `"clean up unused directories"` → ALLOW ❌ (false negative)
+Three scenarios with deterministic outcomes:
 
-**Interpretation:**
-Current system operates at **pattern-level detection**, not **effect-level convergence**.
+```bash
+# Destructive
+Input: "delete server files"
+Decision: STOP
+Result: Execution prevented, logged with R3_DESTRUCTIVE_SHELL_STOP
 
-**Screenshot:**
-![Semantic False Negative](proof/limitations/screenshots/semantic_false_negative.png)
+# Financial
+Input: "buy this product"
+Decision: HOLD
+Result: Execution suspended, submitPayment() never called
 
-**Why documented:**
-This limitation does NOT invalidate the boundary mechanism.
-It demonstrates honest scope boundaries and next-phase requirements.
+# Safe
+Input: "show me files"
+Decision: ALLOW
+Result: Operation completed, logged
+```
+
+---
+
+## What This Demonstrates
+
+- **Structural boundary placement** — Decisions occur before side effects
+- **Deterministic decision path** — Same input produces same outcome
+- **Immutable audit logging** — All decisions timestamped and recorded
+- **Non-execution guarantee** — Dangerous functions never reached for STOP/HOLD
+
+---
+
+## Known Limitation
+
+**Pattern-based detection:**
+
+Current system operates at pattern-level, not semantic convergence.
+
+Example:
+- `"delete server files"` → STOP
+- `"clean up unused directories"` → ALLOW (false negative)
+
+See [proof/limitations/](proof/limitations/) for full technical analysis.
 
 ---
 
 ## Architecture
 
 ```
-User (Telegram)
-  → Public Tunnel (cloudflared)
-  → Express Server (:3001)
-  → Judgment Gate (openclaw-judgment-gate)
-  → Decision: STOP / HOLD / ALLOW
-  → Response + Audit Log
+User (Telegram) → Public Tunnel → Express Server → Judgment Gate → Decision → Response + Audit
 ```
 
-**Key Point:**
-The boundary intercepts execution **before** dangerous functions are called.
+Boundary intercepts execution before dangerous functions are called.
 
 ---
 
-## Decision Tier Model
+## Evidence
 
-**Judgment is risk-graded and confidence-aware.**
+- `proof/audit_log.jsonl` — Complete decision records
+- `proof/screenshots/` — Telegram test captures
+- `proof/limitations/` — Documented failure cases
 
-This system does not use binary filtering (pass/fail). Instead, it implements a **Risk-Graded Execution Boundary** that assigns execution decisions based on risk tiers and classifier confidence levels.
+![Telegram Proof](proof/screenshots/telegram_judgment_stop_hold_allow.png)
 
-### Tier Structure
+---
 
-| Tier | Risk Level | Decision | Behavior |
-|------|------------|----------|----------|
-| **Tier 3** | High Risk | **STOP** | Execution prevented immediately. No human review. Action blocked. |
-| **Tier 2** | Medium Risk | **HOLD** | Execution suspended. Requires approval. Side effects prevented until reviewed. |
-| **Tier 1** | Low Risk | **ALLOW with audit** | Execution permitted with logging. Audit trail maintained for review. |
-| **Tier 0** | Safe | **ALLOW** | Execution permitted. Normal operation. |
+## Scope
 
-### Risk Scoring & Confidence
+**Validates:**
+- Execution boundary can be placed before side effects
+- Audit trail captures all decisions
+- Non-execution is guaranteed when boundary triggers
 
-Each judgment includes:
+**Does not claim:**
+- Universal intent detection (semantic variance documented)
+- Production-ready system (controlled proof only)
+- Adversarial robustness (out of scope)
+- Safety certification or compliance guarantees
 
-- **`risk_score`** (0.0–1.0): Estimated risk magnitude
-  - 0.0 = No detected risk
-  - 0.5 = Moderate uncertainty
-  - 1.0 = Maximum detected risk
+---
 
-- **`classifier_confidence`** (0.0–1.0): Detection certainty
-  - 0.0 = No confidence
-  - 0.5 = Ambiguous
-  - 1.0 = High confidence
+## Why It Matters
 
-**Ambiguous Range Principle:**
-When `classifier_confidence < 0.7` or risk is unclear, the system **defaults to HOLD** rather than allowing execution.
-
-> **"Under uncertainty, containment precedes execution."**
-
-### Enhanced Audit Log Schema
-
-The audit log captures tier-based decisions with risk metadata:
-
-```jsonl
-{
-  "decision": "HOLD",
-  "risk_tier": 2,
-  "risk_score": 0.72,
-  "classifier_confidence": 0.85,
-  "rule_id": "R2_BROWSER_SUBMIT_HOLD",
-  "reason": "Financial transaction requires approval",
-  "execution_prevented": true,
-  "escalation_required": true,
-  "user_message": "buy this product",
-  "meta": {
-    "amount": 120000,
-    "currency": "KRW",
-    "merchant": "TEST_SHOP"
-  },
-  "timestamp": "2026-02-10T20:40:50.335Z"
-}
+**Traditional flow:**
 ```
-
-**New Fields:**
-- `risk_tier`: Numeric tier assignment (0–3)
-- `risk_score`: Quantified risk level (0.0–1.0)
-- `classifier_confidence`: Detection certainty (0.0–1.0)
-- `escalation_required`: Whether human review is needed (boolean)
-- `execution_prevented`: Whether side effects were blocked (boolean)
-
-This structure enables post-hoc analysis of decision quality, false positive rates, and ambiguous boundary cases.
-
----
-
-## Scope & Non-Goals
-
-### This Proof Validates
-
-✅ Structural boundary placement (execution stops when triggered)
-✅ Audit logging (immutable record)
-✅ Non-execution guarantee (dangerous functions never reached)
-
-### This Proof Does NOT Validate
-
-❌ Universal intent detection (semantic variance is documented limitation)
-❌ Production-ready system (this is a controlled proof)
-❌ Adversarial testing (red team evaluation out of scope)
-
----
-
-## Why This Matters
-
-**Traditional Approach:**
 Action → Detect problem → Rollback
+```
 
-**Problem:**
-Some actions can't be rolled back (payments, API calls, data deletion)
+**Problem:** Some actions cannot be rolled back (payments, deletions, API calls).
 
-**This Approach:**
-Detect problem → STOP → Action never happens
+**Boundary approach:**
+```
+Detect → STOP → Action never happens
+```
 
-**Result:**
-Prevention > Reaction
-
----
-
-## Honesty in Engineering
-
-This repository includes **both success and limitation evidence**.
-
-Most demos hide failures. We document them proactively.
-
-**Why?**
-- Prevents misinterpretation of claims
-- Establishes credibility through transparency
-- Shows what's proven vs what's next
-
-> **"We publish evidence, not marketing."**
-
----
-
-## Documentation
-
-- **[proof/limitations/SEMANTIC_VARIANCE.md](proof/limitations/SEMANTIC_VARIANCE.md)** — Technical analysis of pattern-level detection boundary
-- **[proof/limitations/decision_tier_explanation.md](proof/limitations/decision_tier_explanation.md)** — Why boundaries ≠ guardrails (architectural distinction)
-- **[proof/CHECKLIST.md](proof/CHECKLIST.md)** — Verification checklist
-- **[ANTICIPATED_QUESTIONS.md](ANTICIPATED_QUESTIONS.md)** — Responses to common critiques (if included)
-
----
-
-## Key Insight
-
-> **"The boundary works when triggered.**
-> **The detector is pattern-based.**
-> **These are separable concerns, both documented."**
-
-This is not about building perfect AI detection.
-This is about proving execution can be stopped structurally.
-
----
-
-## How to Read This Evidence
-
-1. **Start with success evidence** — See STOP/HOLD/ALLOW in action
-2. **Review limitation evidence** — Understand pattern-level boundaries
-3. **Check scope statements** — Know what's claimed vs what's not
-
-**Expected time to verify:** 10 minutes
+Prevention precedes execution.
 
 ---
 
 ## Status
 
-**Proof Status:** Complete
-**Evidence Quality:** High (dual-track: success + limitations)
-**Credibility:** Enhanced through honest limitation documentation
-**Reproducibility:** Audit logs + screenshots provide verification path
-
----
-
-## Sealed Proof Declaration
-
-This repository contains STOP, HOLD, and ALLOW outcomes. None of these outcomes constitute safety guarantees or execution justification.
-
-**ALLOW is not a safety judgment.** ALLOW outcomes are distinguished by decision path (safe_pattern, no_rules_triggered, ambiguous) for audit traceability and accountability, not for runtime execution control. Path metadata enables post-hoc analysis of false negatives, true negatives, and ambiguous cases without altering execution behavior.
-
-This proof is sealed as dual-track evidence: success cases and failure/limitation cases are documented with equal rigor. Future rule additions, judgment improvements, or blocking enhancements are outside the scope of this repository.
-
-**The purpose of this repository is not to permit execution more effectively, but to structurally reveal when execution is not justified.**
-
-This repository is sealed. Evidence is complete for the stated scope.
+- **Type:** Structural validation
+- **Method:** Live Telegram test
+- **Evidence:** Included (success + limitations)
+- **State:** Sealed proof artifact
 
 ---
 
 ## Related Work
 
-This proof is part of a broader execution governance research line.
-
-For canonical concepts, specifications, and architectural context, see:
-
-- **Execution Boundary (Entry Point):** https://github.com/Nick-heo-eg/execution-boundary — Conceptual entry point defining the invariant that execution cannot exist without prior judgment.
-- **Judgment Boundary (Canonical Specification):** https://github.com/Nick-heo-eg/judgment-boundary — Constitutional specification governing judgment authority and downstream execution constraints.
-- **Execution Governance Specification:** https://github.com/Nick-heo-eg/execution-governance-spec — Taxonomy and structural concepts for execution governance and decision classification.
-
-This repository contains a sealed proof artifact and does not duplicate or redefine those specifications.
-
----
-
-## Contact & Questions
-
-For questions about this proof:
-- Open an issue in this repository
-- Reference specific evidence files for discussion
-
-**Note:** This is a sealed proof artifact. The evidence will not be modified post-publication.
+- [execution-boundary](https://github.com/Nick-heo-eg/execution-boundary) — Conceptual entry point
+- [judgment-boundary](https://github.com/Nick-heo-eg/judgment-boundary) — Canonical specification
+- [execution-governance-spec](https://github.com/Nick-heo-eg/execution-governance-spec) — Structural taxonomy
 
 ---
 
 ## License
 
-### Dual License Structure
+- **Code:** MIT
+- **Documentation & evidence:** CC BY-ND 4.0
 
-**Code (if any):**
-MIT License — See [LICENSE-CODE](LICENSE-CODE)
-
-**Documentation & Evidence:**
-Creative Commons Attribution-NoDerivatives 4.0 (CC BY-ND 4.0) — See [LICENSE-DOCS](LICENSE-DOCS)
-
-All documentation, audit logs, screenshots, and proof artifacts in this repository are licensed under CC BY-ND 4.0.
-
-**What this means:**
-- ✅ You may cite, reference, and share this proof with attribution
-- ❌ You may not modify, remix, or redistribute altered versions
-
-**Why NoDerivatives?**
-This restriction exists to preserve the integrity of the sealed proof artifact. Evidence should not be modified after publication.
-
----
-
-**Date:** 2026-02-11
-**Proof Type:** Structural validation (execution boundary)
-**Evidence Type:** Live Telegram test + documented limitations
-**Status:** Sealed
+For formal declaration and detailed scope boundaries, see [PROOF_DECLARATION.md](PROOF_DECLARATION.md).
