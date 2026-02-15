@@ -121,7 +121,7 @@ Prevention precedes execution.
 ## Related Work
 
 - [execution-boundary](https://github.com/Nick-heo-eg/execution-boundary) — Conceptual entry point
-- [judgment-boundary](https://github.com/Nick-heo-eg/judgment-boundary) — Canonical specification
+- [execution-boundary](https://github.com/Nick-heo-eg/execution-boundary) — Canonical specification
 - [execution-governance-spec](https://github.com/Nick-heo-eg/execution-governance-spec) — Structural taxonomy
 
 ---
